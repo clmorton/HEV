@@ -6,7 +6,7 @@ library(RColorBrewer)
 library(tmap)
 
 #Load Data
-setwd(.../HEV)
+setwd("~/GitHub/HEV")
 SpatDat <- readOGR("Shapefiles","LAD_DEC_2012_GB_BFE_linked")
 summary(SpatDat)
 

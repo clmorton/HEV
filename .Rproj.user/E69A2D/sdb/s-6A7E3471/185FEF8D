@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Load Packages; use the function instal.package() if a first instal is needed\nlibrary(spdep)\nlibrary(rgdal)\nlibrary(maptools)\nlibrary(RColorBrewer)\nlibrary(tmap)\n\n#Load Data\nsetwd(\"~/GitHub/HEV\")\nSpatDat <- readOGR(\"Shapefiles\",\"LAD_DEC_2012_GB_BFE_linked\")\nsummary(SpatDat)\n\n#Choropleth Map of Hybrid Electric Vehicles per '000 cars (ln)\ncol.ramp <- brewer.pal(n = 6, name = \"OrRd\")\nspplot(SpatDat,'HEVln', col = \"transparent\", main = \"Hybrid Electric Vehicles per '000 cars (ln)\")\n\ntm_shape(SpatDat) +\n  tm_polygons(\"HEVln\", style=\"quantile\", title=\"Hybrid Electric Vehicles per '000 cars (ln)\", n = 10)\ntmap_mode(\"view\")\nlast_map()\n\n#Create Spatial Weights\ncontinuity.nb <- poly2nb(SpatDat, queen = TRUE)\nplot(SpatDat, border = \"grey\")\nplot(continuity.nb, coordinates(SpatDat), add = TRUE, col = \"blue\")\ncontinuity.listw <- nb2listw(continuity.nb)\nsummary(continuity.listw)\n\n#Autocorrelation Analysis\nmoran.test(SpatDat$HEVln,continuity.listw, randomisation=FALSE, alternative=\"two.sided\")\nmoran.plot(SpatDat$HEVln, continuity.listw)\nLMIresult <- localmoran(SpatDat$HEVln, continuity.listw)\nLMImap <- spCbind(SpatDat, as.data.frame(LMIresult))\nspplot(LMImap, \"Z.Ii\")\n\n#Spatial log-log Regression Models\n\n#Spatial Lag Model\nmod7SLM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                    + MeanHSizel + CCars1kln + PropDLCCln, \n                    data = SpatDat, continuity.listw)\nsummary(mod7SLM)\n\n#Spatial Error Model\nmod7SEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                      + MeanHSizel + CCars1kln + PropDLCCln, \n                      data = SpatDat, continuity.listw)\nsummary(mod7SEM)\n\n#Spatial Durbin Model\nmod7SDM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                    + MeanHSizel + CCars1kln + PropDLCCln, \n                    data = SpatDat, continuity.listw, type = \"mixed\")\nsummary(mod7SDM)\nW <- as(continuity.listw, \"CsparseMatrix\")\ntrMatc <- trW(W, type = \"mult\")\nsummary(impacts(mod7SDM, tr=trMatc, R=200), zstats=TRUE, short = TRUE)\n\n#Spatial Durbin Error Model\nmod7SDEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                       + MeanHSizel + CCars1kln + PropDLCCln, \n                      data = SpatDat, continuity.listw, etype = \"emixed\")\nsummary(mod7SDEM)\nsummary(impacts(mod7SDEM))\n\n#Simultaneous Autoregressive Model\nmod7SAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                    + MeanHSizel + CCars1kln + PropDLCCln, \n                    data = SpatDat, listw = continuity.listw, family = \"SAR\", method = \"eigen\")\nsummary(mod7SAR)\nmod7resSAR <- MCMCsamp(mod7SAR, mcmc = 5000, burnin = 500, listw = continuity.listw)\nsummary(mod7resSAR)\n\n#Conditional Autoregressive Model\nmod7CAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln\n                    + MeanHSizel + CCars1kln + PropDLCCln, \n                    data = SpatDat, listw = continuity.listw, family = \"CAR\", method = \"eigen\")\nsummary(mod7CAR)\nmod7resCAR <- MCMCsamp(mod7CAR, mcmc = 5000, burnin = 500, listw = continuity.listw)\nsummary(mod7resCAR)\n",
+    "created" : 1507274647491.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2010276634",
+    "id" : "185FEF8D",
+    "lastKnownWriteTime" : 1507286861,
+    "last_content_update" : 1507286861438,
+    "path" : "~/GitHub/HEV/Code/Spatial Regression.R",
+    "project_path" : "Code/Spatial Regression.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
