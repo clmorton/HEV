@@ -1,18 +1,21 @@
-#Load Data
-setwd(...\HEV)
-attach(Integrated_Spreadsheet)
+#Install Packages
+install.packages(c("psych", "car", "ggplot2", "Hmisc", "corrplot"))
 
-#Load Packages; use the function instal.package() if a first instal is needed
+#Load Packages
 library(psych)
 library(car)
 library(ggplot2)
 library(Hmisc)
 library(corrplot)
 
+#Load Data
+setwd("~/GitHub/HEV")
+attach(Integrated_Spreadsheet)
+
 #Histograms of HEVs per '000 cars across the UK 
 
-hist(HEVp1000, breaks = 50, xlab = "Hybrid Electric Vehicles per thousand cars", main = NULL, font.lab = 2, col = "gray80")
-hist(log(HEVln), breaks = 50, xlab = "Hybrid Electric Vehicles per thousand cars (ln)", main = NULL, font.lab = 2, col = "gray80")
+hist(HEVp1000, breaks = 50, xlab = "Hybrid Electric Vehicles per 'thousand'000 cars", main = NULL, font.lab = 2, col = "gray80")
+hist(log(HEVln), breaks = 50, xlab = "Hybrid Electric Vehicles per 'thousand'000 cars (ln)", main = NULL, font.lab = 2, col = "gray80")
 
 #Descriptive Statistics
 
@@ -20,8 +23,8 @@ describe(Integrated_Spreadsheet)
 
 #Bivariate Analaysis with Socioeconomics 
 
-pairs.panels(Integrated_Spreadsheet[c(3,41,48:61)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
-cor1 <- rcorr(as.matrix(Integrated_Spreadsheet[c(3,41,48:61)]), type = "spearman")
+pairs.panels(Integrated_Spreadsheet[c(5,45,53:66)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
+cor1 <- rcorr(as.matrix(Integrated_Spreadsheet[c(5,45,53:66)]), type = "spearman")
 cor1
 cor1$r
 cor1$P
@@ -30,8 +33,8 @@ corrplot(cor1$r, type="upper", order="original",
 
 #Bivariate Analaysis with Travel 
 
-pairs.panels(Integrated_Spreadsheet[c(3,17:34)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
-cor2 <- rcorr(as.matrix(Integrated_Spreadsheet[c(3,17:34)]), type = "spearman")
+pairs.panels(Integrated_Spreadsheet[c(5,17:30, 34)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
+cor2 <- rcorr(as.matrix(Integrated_Spreadsheet[c(5,17:30, 34)]), type = "spearman")
 cor2
 cor2$r
 cor2$P
@@ -40,8 +43,8 @@ corrplot(cor2$r, type="upper", order="original",
 
 #Bivariate Analaysis with Household
 
-pairs.panels(Integrated_Spreadsheet[c(3, 35:43)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
-cor3 <- rcorr(as.matrix(Integrated_Spreadsheet[c(3,35:43)]), type = "spearman")
+pairs.panels(Integrated_Spreadsheet[c(5, 35:44)], method = "spearman", hist.col = "gray80", ellipses = "FALSE", breaks = 25)
+cor3 <- rcorr(as.matrix(Integrated_Spreadsheet[c(5, 35:44)]), type = "spearman")
 cor3
 cor3$r
 cor3$P
@@ -52,7 +55,7 @@ corrplot(cor3$r, type="upper", order="original",
 
 ggplot(Integrated_Spreadsheet[which(Integrated_Spreadsheet$DistLCCln>0),], aes(x=DistLCCln, y=HEVln)) +
   geom_point(shape=1) + 
-  xlab("Euclidean Distance to Closest Border Crossing (ln)") +
+  xlab("Euclidean Distance to the London Congest Charge (ln)") +
   ylab("Hybrid Electric Vehicles per '000 cars (ln)") +
   theme(axis.title.y=element_text(color = "black", face="bold")) +
   theme(axis.title.x=element_text(color = "black", face="bold")) +
@@ -65,7 +68,7 @@ ggplot(Integrated_Spreadsheet[which(Integrated_Spreadsheet$DistLCCln>0),], aes(x
 
 ggplot(Integrated_Spreadsheet, aes(x=PropDriveLCC1kln, y=HEVln)) +
     geom_point(shape=1) + 
-    xlab("Network Distance to Closest Fuel Station in the Republic (km)") +
+    xlab("Number of residents per '000 driving a car to work in the City of London (ln)") +
     ylab("Hybrid Electric Vehicles per '000 cars (ln)") +
     theme(axis.title.y=element_text(color = "black", face="bold")) +
     theme(axis.title.x=element_text(color = "black", face="bold")) +
@@ -85,6 +88,7 @@ ggplot(Integrated_Spreadsheet, aes(x=PropDriveLCC1kln, y=HEVln)) +
   ggbox <- ggbox + theme(axis.title.x=element_text(color = "black", face="bold"))
   ggbox <- ggbox + theme(axis.title.y=element_text(color = "black", face="bold"))
   ggbox <- ggbox + ylab("Hybrid Electric Vehicles per '000 cars") + xlab("Local Authority Categories")
+  ggbox <- ggbox + coord_cartesian(ylim = c(0, 20))
   ggbox
   
   kruskal.test(HEVp1000 ~ AreaCat, data = Integrated_Spreadsheet)

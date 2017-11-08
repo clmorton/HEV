@@ -1,4 +1,7 @@
-#Load Packages; use the function instal.package() if a first instal is needed
+#Install Packages
+install.packages(c("spdep", "rgdal", "maptools", "RColorBrewer", "tmap"))
+
+#Load Packages
 library(spdep)
 library(rgdal)
 library(maptools)
@@ -36,20 +39,20 @@ spplot(LMImap, "Z.Ii")
 #Spatial log-log Regression Models
 
 #Spatial Lag Model
-mod7SLM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                    + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7SLM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                    + MeanHSizel + CCars1kln + PropDriv_1, 
                     data = SpatDat, continuity.listw)
 summary(mod7SLM)
 
 #Spatial Error Model
-mod7SEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                      + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7SEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                      + MeanHSizel + CCars1kln + PropDriv_1, 
                       data = SpatDat, continuity.listw)
 summary(mod7SEM)
 
 #Spatial Durbin Model
-mod7SDM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                    + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7SDM <- lagsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                    + MeanHSizel + CCars1kln + PropDriv_1, 
                     data = SpatDat, continuity.listw, type = "mixed")
 summary(mod7SDM)
 W <- as(continuity.listw, "CsparseMatrix")
@@ -57,23 +60,23 @@ trMatc <- trW(W, type = "mult")
 summary(impacts(mod7SDM, tr=trMatc, R=200), zstats=TRUE, short = TRUE)
 
 #Spatial Durbin Error Model
-mod7SDEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                       + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7SDEM <- errorsarlm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                       + MeanHSizel + CCars1kln + PropDriv_1, 
                       data = SpatDat, continuity.listw, etype = "emixed")
 summary(mod7SDEM)
 summary(impacts(mod7SDEM))
 
 #Simultaneous Autoregressive Model
-mod7SAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                    + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7SAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                    + MeanHSizel + CCars1kln + PropDriv_1, 
                     data = SpatDat, listw = continuity.listw, family = "SAR", method = "eigen")
 summary(mod7SAR)
 mod7resSAR <- MCMCsamp(mod7SAR, mcmc = 5000, burnin = 500, listw = continuity.listw)
 summary(mod7resSAR)
 
 #Conditional Autoregressive Model
-mod7CAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DrivWorkln + PopDln
-                    + MeanHSizel + CCars1kln + PropDLCCln, 
+mod7CAR <- spautolm(HEVln ~ MeanAgeln + Level4ln + MeanY1kln + OneCarln + DriveWorkl + PopDln
+                    + MeanHSizel + CCars1kln + PropDriv_1, 
                     data = SpatDat, listw = continuity.listw, family = "CAR", method = "eigen")
 summary(mod7CAR)
 mod7resCAR <- MCMCsamp(mod7CAR, mcmc = 5000, burnin = 500, listw = continuity.listw)

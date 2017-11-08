@@ -6,9 +6,11 @@ Date: 26/09/2017
 
 This collection of files and folders represents a walkthrough of a project conducted at the University of Leeds Institute for Transport Studies which examined the demand for Hybrid Electric Vehicles in the United Kingdom from a spatial perspective.
 
-The project has been built in the R statistical programming language (URL) with the aid of the RStudio (URL) project management overlay. The analysis also requires  the use of a number of R packages.  
+The project has been built in the R statistical programming language (https://www.r-project.org/) with the aid of the RStudio (https://www.rstudio.com/) project management overlay. The analysis also requires  the use of a number of R packages.  
 
-The analysis has been published in the journal of transport policy and can be viewed at the following URL:
+The analysis has been published in the Journal of Transport Policy and can be viewed at the following URL:
+
+http://eprints.whiterose.ac.uk/120809/
 
 The folders contain the following resources which will allow for the replication of the analysis presented in the paper. 
 
@@ -18,12 +20,13 @@ Shapefiles: contains files which define the spatial characteristics used in the 
 
 Code: contains the R scripts utilised to perform the analysis
 
-Paper: 
+Paper: contains a version of the paper describing the results of the analysis
 
 In order to conduct the walkthrough, follow these steps
 
-load the project file FILE located in the Code folder into RStudio
-set the project working directory to the HEV folder
-load the FILE from the Data folder
+[1] Load the project file HEV.RProj located in the HEV folder into RStudio
+[2] Import the dataset 'Integrated_Spreadsheet'
+[3] start to run the code, I suggest line-by-line 
+
 
 
