@@ -1,0 +1,64 @@
+---
+title: 'Spatial Analysis with SPDEP: A demonstration of Hybrid Electric Vehicle Adoption'
+author: "Craig Morton"
+date: "16 November 2017"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+  beamer_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+- This walkthrough is intended to demonstrate how to use the R programming environment to **conduct a research project**
+- A series of packages will be used, with particular attention paid to  **SPDEP** 
+- The walkthrough concentrates on a spatial analysis of the **adoption of Hybrid Electric Vehicles in the UK**
+- You can get the project files from the following GitHub repository: https://github.com/clmorton/HEV
+- Please feel free to **use this code in your our analyses** in the future
+- This is a practical demonstration and will not cover underlining statistical theory
+
+## SPDEP Package
+
+- Available on CRAN and includes a number of functions for **spatial analysis and spatial econometrics**
+- Facilitates the production of **spatial weights matrice**
+- Has functions to calculate **spatial autocorrelation statistics**
+- Allows for the estimation of **spatial regression models** using areal data
+
+https://cran.r-project.org/web/packages/spdep/index.html
+
+## Spatial Econometric Models
+
+```{r, out.width = "1000px", fig.align='center'}
+knitr::include_graphics("/Users/tracmo/Documents/GitHub/HEV/Presentation/SpatialEconometrics.png")
+```
+
+LeSage and Pace - Introduction to Spatial Econometrics
+https://www.crcpress.com/Introduction-to-Spatial-Econometrics/LeSage-Pace/p/book/9781420064247
+
+Elhorst - Spatial Econometrics: From cross-sectional data to spatial panels
+http://www.springer.com/gb/book/9783642403392
+
+
+## Hybrid Electric Vehicle Adoption
+
+- Co-authored with Robin Lovelace and Jillian Anable
+- Published in Transport Policy
+
+```{r, out.width = "800px", fig.align='center'}
+knitr::include_graphics("/Users/tracmo/Documents/GitHub/HEV/Presentation/PaperHeader.png")
+```
+
+http://www.sciencedirect.com/science/article/pii/S0967070X1730080X?via%3Dihub
+
+## Hybrid Electric Vehicle Adoption
+
+
+- Examines spatial variation in the **adoption of HEVs** across the local authorities of the UK
+- Determines Whether the spatial variation displays any significant **geographic organisation**
+- Considers if the rate of HEV uptake is associated with **nearness to the London Congestion Charge**
+
+
